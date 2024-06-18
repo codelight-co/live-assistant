@@ -55,7 +55,7 @@ chat_engine = CondensePlusContextChatEngine.from_defaults(
     llm=llm,
     context_prompt=(
         "You are a ai assistant, able to have normal interactions, as well as talk"
-        " about Codelight."
+        " about Company."
         "Here are the relevant documents for the context:\n"
         "{context_str}"
         "\nInstruction: Use the previous chat history, or the context above, to interact and help the user."
