@@ -1,6 +1,6 @@
-import nest_asyncio
+# import nest_asyncio
 
-nest_asyncio.apply()
+# nest_asyncio.apply()
 
 from llama_index.llms.ollama import Ollama
 
@@ -54,8 +54,8 @@ chat_engine = CondensePlusContextChatEngine.from_defaults(
     memory=memory,
     llm=llm,
     context_prompt=(
-        "You are a ai assistant, able to have normal interactions, as well as talk"
-        " about Company."
+        "You are a chatbot, able to have normal interactions, as well as talk"
+        " about Codelight."
         "Here are the relevant documents for the context:\n"
         "{context_str}"
         "\nInstruction: Use the previous chat history, or the context above, to interact and help the user."
@@ -76,11 +76,10 @@ app = Flask(__name__)
 def askPDFPost():
     json_content = request.json
     query = json_content.get("query")
-    global chat_engine
+    # global chat_engine
     response = chat_engine.chat(
         query
     )
-    print(str(response))
     return str(response)
 
 
@@ -91,6 +90,7 @@ def pdfPost():
     save_file = "data/" + file_name
     file.save(save_file)
     print(f"filename: {file_name}")
+    global documents
     documents = SimpleDirectoryReader("./data/").load_data()
 
 # set up ChromaVectorStore and load in data
