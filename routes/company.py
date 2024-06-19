@@ -1,9 +1,32 @@
 from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import FastAPI, UploadFile, File
+from fastapi import Request
 from sqlalchemy.orm import Session
-from schemas.models import User
+from database.models import Users
+from schemas.models import UserDto
+from typing import Annotated
+from pathlib import Path
+from utils.security import  validate_token, get_current_user
 from database.connection import get_db
+from llama_index.core import VectorStoreIndex, SimpleDirectoryReader
+from ai_models.app import pdfPost as ai_pdf_post
 
 router = APIRouter(tags=["company"])
+
+@router.post('/upload-data')
+async def build_knowledge(current_user: Annotated[Users, Depends(get_current_user)],request: Request, file: UploadFile = File(...)):
+    id = current_user.id
+    file_name = file.filename
+    print(file_name)    
+    save_dir = Path("ai_models/data") / id
+    save_dir.mkdir(parents=True, exist_ok=True)
+    save_file = save_dir / file_name
+    with save_file.open("wb") as buffer:
+        buffer.write(await file.read())
+    print(f"filename: {file_name}")
+    # documents = SimpleDirectoryReader("./ai_models/data/").load_data()
+    # return ai_pdf_post(documents)
+
 
 # Endpoint to authenticate a company user
 @router.post('/login')

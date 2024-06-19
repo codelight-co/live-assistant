@@ -22,7 +22,7 @@ app.add_middleware(
 
 
 app.include_router(router=auth_router, prefix="/auth")
-app.include_router(router=ai_model, prefix="/ai")
+# app.include_router(router=ai_model, prefix="/ai")
 app.include_router(router=admin_router, prefix="/admin")
 app.include_router(router=company_router, prefix="/companies")
 app.include_router(router=rag_router, prefix="/rag")

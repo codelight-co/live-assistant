@@ -19,11 +19,11 @@ class Post(BaseModel):
     class Config:
         orm_mode = True
 
-class User(BaseModel):
+class UserDto(BaseModel):
     id: Optional[UUID]
-    username: str
+    email: str
     password: str
-    model_id: Optional[UUID]
+    role: UserRole
 
     class Config:
         orm_mode = True

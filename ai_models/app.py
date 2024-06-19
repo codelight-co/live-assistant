@@ -77,7 +77,7 @@ async def ask_pdf_post(request: Request):
     return str(response)
 
 
-@router.post("/data", status_code = status.HTTP_200_OK )
+# @router.post("/data", status_code = status.HTTP_200_OK )
 def pdfPost(request: Request):
     file = request.files["file"]
     file_name = file.filename
@@ -87,11 +87,9 @@ def pdfPost(request: Request):
     documents = SimpleDirectoryReader("./data/").load_data()
 
 # set up ChromaVectorStore and load in data
-    global index
     index = VectorStoreIndex.from_documents(
         documents, storage_context=storage_context, embed_model=embed_model
     )
-    global chat_engine
     chat_engine = CondensePlusContextChatEngine.from_defaults(
         index.as_retriever(),
         memory=memory,
