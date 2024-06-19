@@ -9,7 +9,7 @@ from pathlib import Path
 from utils.security import  validate_token, get_current_user
 from database.connection import get_db
 from llama_index.core import VectorStoreIndex, SimpleDirectoryReader
-from ai_models.app import pdfPost as ai_pdf_post
+from ai_models.app import data_post 
 
 router = APIRouter(tags=["company"])
 
