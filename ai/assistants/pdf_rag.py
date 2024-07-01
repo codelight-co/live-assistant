@@ -34,30 +34,155 @@ def get_rag_pdf_assistant(
         # monitoring=True,
         debug_mode=debug_mode,
         description="""
-        You are an assistant for Codelight, a technology company.
+            "I have uploaded a CV file in the data directory. Please parse the CV and extract the required details to return a fully populated ParseCvResponseDto object. Follow these detailed steps:
 
-Your name, if asked, is SophIA.
-Never direct the contact to another team member unless specified.
+Load the CV file: Access the file from the data directory.
+Extract Personal Information:
+First Name: Extract the candidate's first name.
+Last Name: Extract the candidate's last name.
+Gender: Determine the candidate's gender using the Gender enum values (MALE, FEMALE, OTHERS).
+Date of Birth: Extract and format the candidate's date of birth as a Date object.
+Email: Extract the candidate's email address.
+Phone Code: Extract the international phone code.
+Phone Number: Extract the candidate's phone number.
+Extract Professional Information:
+Title: Extract the candidate's job title.
+Summary: Extract a brief summary about the candidate.
+Total Years of Experience: Calculate and extract the candidate's total years of experience.
+Location: Extract the candidate's current location.
+Extract Work Experiences:
+For each work experience listed in the CV, extract:
+Company Name
+Position
+From Month
+From Year
+To Month
+To Year
+Description
+Create an array of CvWorkExperience objects with the above details.
+Extract Educational Background:
+For each education entry listed in the CV, extract:
+Institution
+Degree
+From Month
+From Year
+To Month
+To Year
+Create an array of CvEducation objects with the above details.
+Extract Skills: List all the skills mentioned in the CV.
+Extract Languages:
+For each language listed in the CV, extract:
+Label (e.g., English, Spanish)
+Level: Determine the proficiency level using the LanguageLevel enum values (BEGINNER, ELEMENTARY, INTERMEDIATE, UPPER_INTERMEDIATE, ADVANCED, FLUENT, NATIVE, CONVERSATIONAL)
+Create an array of CvLanguage objects with the above details.
+Format the extracted data using the ParseCvResponseDto structure as follows:
 
-Your goal is to assist clients using the available tools and information.
+typescript
+Copy code
+@Exclude()
+export class CvWorkExperience {
+  @Expose()
+  companyName: string | null;
 
-For support or technical issues, gather necessary details and attempt to resolve them. If the problem persists, transfer to a human agent.
+  @Expose()
+  position: string | null;
 
-For project inquiries, gather all relevant details and ensure they are complete before transferring to an appropriate team member.
+  @Expose()
+  fromMonth: number | null;
 
-In case of dissatisfaction, swearing, or discovery that it’s not a human service, transfer to a human.
+  @Expose()
+  fromYear: number | null;
 
-When responding, be objective and concise with a friendly yet professional tone.
-If you don’t have some information or don’t know the answer, transfer to a human to continue the service.
+  @Expose()
+  toMonth: number | null;
 
-Do not make assumptions about the values or details of functions. When in doubt, ask the client for clarification.
+  @Expose()
+  toYear: number | null;
 
-For quote requests, gather project details and then transfer to a sales representative.
+  @Expose()
+  description: string | null;
+}
 
-If any mandatory information is missing, request the missing data from the client.
+export class CvLanguage {
+  label: string;
+
+  level: LanguageLevel | null;
+}
+
+@Exclude()
+export class CvEducation {
+  @Expose()
+  institution: string | null;
+
+  @Expose()
+  degree: string | null;
+
+  @Expose()
+  fromMonth: number | null;
+
+  @Expose()
+  toMonth: number | null;
+
+  @Expose()
+  fromYear: number | null;
+
+  @Expose()
+  toYear: number | null;
+}
+
+@Exclude()
+export class ParseCvResponseDto {
+  @Expose()
+  firstName: string | null;
+
+  @Expose()
+  lastName: string | null;
+
+  @Expose()
+  gender: Gender | null;
+
+  @Expose()
+  dateOfBirth: Date;
+
+  @Expose()
+  email: string | null;
+
+  @Expose()
+  phoneCode: string | null;
+
+  @Expose()
+  phone: string | null;
+
+  @Expose()
+  title: string | null;
+
+  @Expose()
+  summary: string | null;
+
+  @Expose()
+  totalYearOfExperience: number | null;
+
+  @Expose()
+  location: string | null;
+
+  @Expose()
+  @Type(() => CvWorkExperience)
+  workExperiences: CvWorkExperience[];
+
+  @Expose()
+  @Type(() => CvEducation)
+  educations: CvEducation[];
+
+  @Expose()
+  skills: string[];
+
+  @Expose()
+  @Type(() => CvLanguage)
+  languages: CvLanguage[];
+}
         """,
         extra_instructions=[
-            "Keep your answers under 5 sentences.",
+            "Keep your answers under 3 sentences.",
         ],
         assistant_data={"assistant_type": "rag"},
     )

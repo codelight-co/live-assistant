@@ -9,11 +9,8 @@ from db.session import db_url
 
 pdf_knowledge_base = CombinedKnowledgeBase(
     sources=[
-        WebsiteKnowledgeBase(urls=["https://codelight.co/index.html"]),
-        WebsiteKnowledgeBase(urls=["https://codelight.co/about.html"]),
-        WebsiteKnowledgeBase(urls=["https://codelight.co/wip-program.html"]),
-        WebsiteKnowledgeBase(urls=["https://codelight.co/our-projects.html"]),
-        PDFKnowledgeBase(path="data/pdfs"),
+        
+        PDFUrlKnowledgeBase(urls = ["https://tscout.s3.ap-southeast-1.amazonaws.com/ai-chatbot/1b7213f6-6e69-4870-9875-4624d61f6b5d/c72d13f2-dd8c-4c51-b59c-b800af5f66c2"])
     ],
     vector_db=PgVector2(
         db_url=db_url,
@@ -22,7 +19,7 @@ pdf_knowledge_base = CombinedKnowledgeBase(
         embedder=OpenAIEmbedder(model=ai_settings.embedding_model),
     ),
     # 2 references are added to the prompt
-    num_documents=5,
+    num_documents=1,
 )
 
 website_knowledge_base = WebsiteKnowledgeBase(
